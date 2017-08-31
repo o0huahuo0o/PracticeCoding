@@ -1,0 +1,59 @@
+/*
+* @Author: Demi
+* @Date:   2017-08-23 16:02:16
+* @Last Modified by:   Demi
+* @Last Modified time: 2017-08-29 17:13:43
+*/
+* {
+    box-sizing: border-box;
+    padding: 0px;
+    margin: 0px;
+}
+.body{
+    padding:20px;
+    margin:20px;
+    background-color:#eee;
+    border:1px solid #999;
+    display:table;
+}
+.left,.main,.right{
+    background-color:#fff;
+    border:1px solid #999;
+    vertical-align: top;
+    display: inline-block;
+    padding:20px;
+    font-size:1em;
+}
+.left{
+    width:200px;
+}
+.right{
+    width:120px;
+}
+.main{
+    margin: 0 20px;
+    width: calc(100% - 200px - 120px - 40px);
+}
+img{
+    width:80px;
+    height: 80px;
+}
+.left>img{
+    float: left;
+    margin-right:10px;
+}
+.right>img{
+    margin-top:20px;
+}
+.right>img:first-child{
+    margin-top:0px;
+}
+#title{
+    font-size:1em;
+    vertical-align: top;
+}
+p{
+    letter-spacing:1px;
+    line-height: 1.2em;
+    margin: 0.5em 0 ;
+}

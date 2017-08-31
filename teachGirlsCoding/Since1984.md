@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>since 1984</title>
+</head>
+<body style="width:1000px;margin:0 auto;padding-top:0px;font-family:Arial,STKaiti,Kaiti SC,sans-serif;background-color:black">
+    <div style="width:100%;height:625px;">
+        <a href="https://book.douban.com/subject/4820710/" target="_blank">
+        <img src="img\bigbrother.jpg">
+        </a>
+        <!-- <div style="position:absolute;top:125px;width:1000px;font-family:fantasy;">
+            <p style="font-size:30px;margin-left:20px;color:seashell;">We come</p>
+            <p style="font-size:50px;margin-left:20px;color:black;">From 2017</p>
+        </div>  -->
+    </div>
+    <div id="text3" style="width:1000px;height:90px;text-align:center;margin-top:30px;color:SEASHELL;font-family:'Maiandra GD'">
+        <p>Who controls the <b>Past</b> controls the <b>Future</b>.</p>
+        <p>Who controls the <b>Present</b> controls the <b>Past</b>.</p>
+        <p>We are saying <b>"Good Bye"</b> to the <b>Truth</b>...</p>
+    </div>
+    <div style="width:1000px;height:350px;padding-top:30px;">
+        <hr style="color:#eeeeee;border-width:1px;border-color:#eeeeee;background-color:#eeeeee;margin-top:20px;margin-bottom:20px;">
+        <div style="float:left;width:280px;">
+            <div style="height:40px;font-size:25px;color:gray;font-family:'Calibri';">
+                : : War is Peace
+            </div>
+            <div>
+                <img style="width:280px;height:200px;" src="img\war.png">
+            </div>
+        </div>
+        <div style="float:left;width:280px;margin-left:80px;">
+            <div style="height:40px;font-size:25px;color:gray;font-family:'Calibri';">
+                : : Freedom is Slavery
+            </div>
+            <div>
+                <img style="width:280px;height:200px;" src="img\freedom.jpg">
+            </div>
+        </div>
+         <div style="float:left;width:280px;margin-left:80px;">
+            <div style="height:40px;font-size:25px;color:gray;font-family:'Calibri';">
+                : : Ignorance is Strength
+            </div>
+            <div>
+                <img style="width:280px;height:200px;" src="img\ignorance.png">
+            </div>
+         </div>
+        </div>
+    </div>
+    <div style="width:600px;text-align:left;font-size:24px;color:gray;margin-bottom:50px;font-family:'Maiandra GD';">
+        <i style="font-size:18px;">"To the future or to the past, to a time when thought is free, when men are different from one another and do not live alone ——"</i><br/>
+        <i style="font-size:18px;">"To a time when truth exists and what is done cannot be undone ——"</i>
+    </div>
+    <div style="width:400px;text-align:left;font-size:24px;color:gray;margin-bottom:50px;font-family:'Maiandra GD';">
+        <p style="font-size:18px;">From the age of uniformity;<br/> From the age of solitude;<br/> From the age of Big Brother; <br/>From the age of doublethink <br/></p>
+        <p style="text-align:right;">—— Greetings!</p>
+    </div>
+<div style="text-align:right;color:seashell;font-family:fantasy;">
+    From 2017<br>
+      TO 1984
+    <br>
+    <br>
+</div>
+</body>
+</html>

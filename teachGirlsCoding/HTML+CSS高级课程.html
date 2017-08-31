@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>test</title>
+    <link ref="stylesheet" >
+</head>
+<body>
+    <div class="div-square">这是一个正方形的div</div>
+    <div>
+        <input id="input"></input>
+        <button id="submit">提交</button>
+        <p>输入内容:</p>
+    </div>
+    <div id="history"></div>
+    <script type="text/javascript">
+            var submit=document.getElementById("submit");
+            submit.onclick=function(){
+            var el_input=document.getElementById("input");
+            var input=el_input.value;
+            var history_element=document.getElementById("history");
+            var history=history_element.innerHTML;
+            history=history+"<p>已输入："+input+"</p>";
+           
+            history_element.innerHTML=history;
+        };
+    </script> 
+</body>
+</html>

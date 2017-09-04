@@ -1,0 +1,41 @@
+* {
+    box-sizing: border-box;
+    padding: 0px;
+    margin: 0px;
+}
+.body,.left,.main,.right{
+    border: 1px solid #999;
+    padding:20px;
+}
+.left,.main,.right{
+    background-color: #fff;
+    float: left;
+}
+.body{
+    background-color: #eee;
+}
+.main{
+    width:auto;
+    margin: 0 140px 0 220px;       
+}
+.left{
+    width:200px;
+    margin-left: -100%;         /*1.左边块设置100%负左边距*/
+}
+.right{
+    width:120px;           
+    margin-left: -120px;         /*2.右边块设置自身宽度负左边距*/
+}
+img{
+    width:80px;
+    height: 80px;
+    float: left;
+}
+.left>img{
+    margin-right: 10px;
+}
+.body::after{
+    content: " ";
+    display: block;
+    clear: both;
+}

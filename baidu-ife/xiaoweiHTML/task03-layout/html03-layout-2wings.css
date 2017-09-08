@@ -16,7 +16,7 @@
 }
 .main{
     width:auto;
-    margin: 0 140px 0 220px;       
+    margin: 0 140px 0 220px;       /*3.中间块设置左右外边距Ⅹ内容不被遮盖*//*3.也有将中间块再加一层div再设置外边距的做法*/
 }
 .left{
     width:200px;

@@ -1,0 +1,47 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/*变形（Transforms）居中*//*要带上浏览器前缀*/
+.container{
+    height: 200px;
+    width:400px;
+    background-color: #ccc;
+    position: absolute;
+    display: inline-block;
+}
+.center-container{ 
+    display: table;
+    width:100%; 
+}  
+.table-cell {  
+  display: table-cell;
+  text-align:center;  
+  vertical-align: middle;  
+}  
+.left,.right{
+    height: 50px;
+    width:50px;
+    background-color: #fc0;
+}
+.left{
+    border-radius: 0 0 100% 0;
+}
+.right{
+    border-radius: 100% 0 0 0;
+    position: absolute;
+    right: 0;
+    bottom:0;
+}
+/* 优点：
+
+1.      内容可变高度
+2.      代码量少
+
+缺点：
+
+1.      IE8不支持
+2.      属性需要写浏览器厂商前缀
+3.      可能干扰其他transform效果
+4.      某些情形下会出现文本或元素边界渲染模糊的现象 */

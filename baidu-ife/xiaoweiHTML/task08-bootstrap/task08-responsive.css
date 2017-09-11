@@ -1,0 +1,17 @@
+.box,.container{
+    border:1px solid #999999;
+}
+.container{
+    padding:10px;
+    width: 100%;
+}
+.box{
+    height:50px;
+    background-color: #eee;
+}
+.row{
+    margin: 0;
+}
+.outer{
+    padding: 10px;
+}

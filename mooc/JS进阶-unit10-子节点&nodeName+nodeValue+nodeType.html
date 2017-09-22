@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>子节点&nodeName+nodeValue+nodeType</title>
+</head>
+<body>
+<div>
+  javascript  
+  <p id='js'>javascript</p>
+  <div>jQuery</div>
+  <h5>PHP</h5>
+</div>
+<script type="text/javascript">
+ var lists=document.getElementsByTagName('div')[0].childNodes;
+  document.write('div子节点个数:'+lists.length+'<hr/>');  
+ for(var i=0;i<lists.length;i++){
+    document.write('第'+(i+1)+'个子节点是'+lists[i]+'<br/>');
+    document.write('第'+(i+1)+'个子节点的名称是'+lists[i].nodeName+'<br/>');
+    document.write('第'+(i+1)+'个子节点的内容是'+lists[i].nodeValue+'<br/>');
+    document.write('第'+(i+1)+'个子节点的类型是'+lists[i].nodeType+'<br/>'+'<hr/>');
+    // console.log('第'+(i+1)+'个子节点是'+lists[i]);           
+    var newp=lists[i];
+    console.log(newp,newp.nodeName,newp.nodeValue,newp.nodeType);
+    document.write('第'+(i+1)+'个子节点赋值给变量之后是'+newp+'<br/>'+'<hr/>');  //这里与第25行控制台对同一个节点的输出不同
+ }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>
+<div id="content">
+  <h1>html</h1>
+  <h1>php</h1>
+  <h1>javascript</h1>
+  <h1>jquery</h1>
+  <h1>java</h1>
+</div>
+
+<script type="text/javascript">
+function clearText() {
+  var content=document.getElementById("content");  
+/*   从第一个空节点开始删除,必须提前用l=子节点列表长度限定循环次数
+  var l=content.childNodes.length;
+  for(var i=0;i<l;i++){                                       
+      var deleteN=content.removeChild(content.firstChild);
+      console.log(deleteN,content.childNodes.length);
+      while(content.childNodes[0]==null){
+        console.log('节点已全部删除');
+        break;
+      }
+  }  */ 
+
+/*   // 从最末子节点开始删除&使用while循环
+  while(content.childNodes.length!==0){
+    content.removeChild(content.lastChild);
+    console.log(content.childNodes,content.lastChild);
+  }
+  while(content.childNodes.length==0){
+        console.log('节点已全部删除');
+        break;
+  } */
+
+  //只删除非空节点&使用for循环,会导致最终div有一堆空节点没有删除干净
+  for(var i=0;i<content.childNodes.length;i++){
+    if(content.childNodes[i].nodeType!=1){
+          continue;
+      } else{
+          content.removeChild(content.childNodes[i]);
+          console.log(content.childNodes,content.lastChild);
+          }
+  }
+  while(content.childNodes.length==0){
+        console.log('节点已全部删除');
+        break;
+        } 
+        console.log(content.childNodes);
+}
+</script>
+
+<button onclick="clearText()">清除节点内容</button>
+
+
+
+</body>
+</html>

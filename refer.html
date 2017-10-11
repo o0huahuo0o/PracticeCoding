@@ -1,77 +1,298 @@
+
 <!DOCTYPE html>
-<html>
- <head>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
-    <title> new document </title>  
-    <meta http-equiv="Content-Type" content="text/html; charset=gbk"/>   
-    <script type="text/javascript"> 
-        // 鼠标移动改变背景,可以通过给每行绑定鼠标移上事件和鼠标移除事件来改变所在行背景色。  
-       window.onload = function(){
-           changeC();                           //必须将背景变色函数定义和调用分开,否则新添加行背景不能变色
-         } 
-         function changeC(){
-         var trlist=document.getElementsByTagName('tr');
-          for(var i=0;i<trlist.length;i++){
-/*               trlist[i].setAttribute('onmouseover','mouseOver()');
-              trlist[i].setAttribute('onmouseout','mouseOut()'); */
-          trlist[i].onmouseover=function(){
-              this.style.background='#f2f2f2';
-          }
-          trlist[i].onmouseout=function(){
-              this.style.background='#fff';
-          }        
-          }
-         }
-       // 编写一个函数，供添加按钮调用，动态在表格的最后一行添加子节点；
-       
-      function addTr(obj){
-        var tab=document.getElementById('table').lastChild;
-         var newTr=document.createElement('tr');
-         var newTd1=document.createElement('td');
-         var newTd2=document.createElement('td');
-         var newTd3=document.createElement('td');
-         var newName=prompt('请输入姓名:');
-         var newNum=prompt('请输入学号:');
-         newTd1.innerHTML=newNum;
-         newTd2.innerHTML=newName;
-         newTd3.innerHTML='<a href="javascript:;" onclick="deleteTr(this)" >删除</a>';
-         tab.appendChild(newTr);
-         newTr.appendChild(newTd1);
-         newTr.appendChild(newTd2);
-         newTr.appendChild(newTd3);
-         console.log(newTr,tab);
-         changeC();   
-      }                   
-      // 创建删除函数
-      function deleteTr(obj){
-        var parentTab=obj.parentNode.parentNode.parentNode;     //方法一:从'删除'所在这一行的父节点删除该行
-        var parentTr=obj.parentNode.parentNode;
-        console.log(parentTr,parentTab);
-        parentTab.removeChild(parentTr);
+    <title>Title</title>
+</head>
+<style>
+    li{
+        display: inline-block;
+        background: red;
+        margin: 5px;
+        color: white;
+        width: 15px;
+        /*height: 100px;*/
+    }
+</style>
+<body>
+<!--基于上一任务
+限制输入的数字在10-100
+队列元素数量最多限制为60个，当超过60个时，添加元素时alert出提示
+队列展现方式变化如图，直接用高度表示数字大小
+实现一个简单的排序功能，如冒泡排序（不限制具体算法），用可视化的方法表达出来，参考见下方参考资料-->
+    <input type="text" id="num">
+    <button>左侧入</button>
+    <button>右侧入</button>
+    <button>左侧出</button>
+    <button>右侧出</button>
+    <button>出随机的队列</button>
+    <button>冒泡排序</button>
+    <!--div中不要有空节点-->
+    <div id="div_wrap"></div>
+
+<script>
+//    var oNum=document.getElementById("num");
+//    var aBtn=document.getElementsByTagName("button");
+//    var oDiv=document.getElementById("div_wrap");
+//    var oli=document.getElementsByTagName("li");
+//    aBtn[0].onclick=function () {
+//
+//        if(oNum.value.length==0||isNaN(oNum.value)){
+//            alert("请输出一个数字");
+//        }else if (oNum.value<10||oNum.value>100){
+////            console.log(typeof oNum.value);
+//            alert("请输入一个10-100的数字");
+//        }else if (oli.length>5){
+//            alert("队列元素数量最多限制为60个");
+//        }else {
+//            var oDiv_1=document.createElement("li");
+//            oDiv_1.innerHTML=oNum.value;
+//            console.log(oNum.value);
+//            oDiv_1.style.height=oNum.value*5+"px";
+//            oDiv_1.style.width="20px";
+//
+//            oDiv.insertBefore(oDiv_1,oDiv.children[0]);
+//            oNum.value=null;
+//        }
+//
+//
+//    };
+//    aBtn[1].onclick=function () {
+//        if (isNaN(oNum.value)||oNum.value.length==0){
+//            alert("请输入一个数字");
+//        } else  if (oNum.value<10||oNum.value>100){
+//            alert("请输入一个10-100的数字");
+//        }else if (oli.length>5){
+//            alert("队列元素数量最多限制为60个");
+//        }else {
+//            var oDiv_2=document.createElement("li");
+//            oDiv_2.innerHTML=oNum.value;
+//            oDiv.appendChild(oDiv_2);
+//            oNum.value=null;
+//        }
+//    };
+//    aBtn[2].onclick=function () {
+//        if (oDiv.hasChildNodes()){
+//            alert(oDiv.children[0].innerHTML);
+//            oDiv.removeChild(oDiv.children[0]);
+//        }else {
+//            alert("队列为空请添加元素");
+//            return false;
+//        }
+//
+//    };
+//
+//    aBtn[3].onclick=function () {
+//        console.log(oDiv.hasChildNodes())
+//
+//        if (oDiv.hasChildNodes())
+//        {
+//            var oLi_len=oli.length;
+//            alert(oli[oLi_len-1].innerHTML);
+//            oli[oLi_len-1].remove();
+////                alert(oDiv.children[oLi_len-1].innerHTML);
+////                oDiv.removeChild(oDiv.children[oLi_len-1]);
+//        } else {
+//            alert("队列为空请添加元素");
+//            return false;
+//        }
+//    };
+(function () {
+    var arr=[],
+            oNum=document.getElementById("num"),
+            aBtn=document.getElementsByTagName("button"),
+            oDiv=document.getElementById("div_wrap"),
+            oli=document.getElementsByTagName("li"),
+            oliLen=oli.length;
+    var domUtil={
+//        先进行div样式的创建
+        createNum:function (el,value) {
+            el=document.createElement("li");
+            el.style.height=value*5+"px";
+            return el;
+        },
+        leftIn:function (value) {
+            var li=domUtil.createNum(li,value);
+            console.log(li);
+            arr.unshift(value);
+            oDiv.insertBefore(li,oDiv.children[0]);
+        },
+        rightIn:function (value) {
+            var li=this.createNum(li,value);
+            arr.push(value);
+            oDiv.appendChild(li);
+        },
+        rightOut:function () {
+            if (oDiv.hasChildNodes()){
+                arr.pop();
+                oDiv.removeChild(oDiv.lastChild);
+            }else {
+                alert("队列为空请添加元素");
+            }
+        },
+        leftOut:function () {
+            if (oDiv.hasChildNodes()){
+                arr.shift();
+                alert(oli[0].innerHTML);
+                oDiv.removeChild(oDiv.children[0]);
+            } else {
+                alert("队列为空请添加元素");
+            }
+        },
+        random:function () {
+            oDiv.innerHTML=null;
+            arr.length=0;
+            for(var i=0;i<10;i++){
+                domUtil.leftIn(parseInt(Math.random()*10)+20);
+            }
+        }
+    };
+    //    冒泡排序 用for循环的时候不能得到否则语句 没法挨个清除定时器
+    function bubbleSort(el) {
+        var len = arr.length,
+                li = el,
+                i = 0,
+                j = 0,
+                temp = null,
+                time = null;
+        time = setInterval(start, 10);
+        function start() {
+            if (i < len) {
+                if (j < len - i - 1) {
+                    if (arr[j] > arr[j + 1]) {
+                        temp = arr[j];
+                        arr[j] = arr[j + 1];
+                        arr[j + 1] = temp;
+                        li[j].style.height = arr[j] * 5 + "px";
+                        li[j + 1].style.height = arr[j + 1] * 5 + "px";
+                    }
+                    j++;
+                    return;
+                } else {
+                    j = 0;
+                }
+                i++;
+            } else {
+                clearInterval(time);
+            }
+        }
+    }
+//    冒泡
+//    function maopao(oli) {
+//        var len=arr.length;
+//        var time=null;
+//        var li=oli;
+//        time=setInterval(function(){
+//            start()
+//
+//
+//        },2000);
+//        function start() {
+//
+//            for(var i=0;i<len-1;i++){
+//                console.log("test");
+//                for(var j=0;j<len-1-i;j++){
+//                    if(arr[j]>arr[j+1]){
+//                        temp=arr[j];
+//                        arr[j]=arr[j+1];
+//                        arr[j+1]=temp;
+//                        li[j].style.height=arr[j]*5+"px";
+//                        li[j+1].style.height=arr[j+1]*5+"px";
+//                    }
+//
+//                }
+//
+//            }
+//              没法得到i++时的效果不会用这种写法清除定时器
+////            clearInterval(time);
+//        }
+//
+//
+//
+//    }
+    aBtn[0].onclick = function() {
+        var value = parseInt(document.getElementById('num').value);
+        /^([0-9]{1,2}|100)$/.test(value) ? domUtil.leftIn(value) : alert('请输入正确数值');
+    };
+    aBtn[1].onclick = function () {
+        var value = parseInt(document.getElementById('num').value);
+        /^([0-9]{1,2}|100)$/.test(value) ? domUtil.rightIn(value) : alert('请输入正确数值');
+    };
+    aBtn[2].onclick=domUtil.leftOut;
+    aBtn[3].onclick=domUtil.rightOut;
+    aBtn[4].onclick=domUtil.random;
+//    aBtn[5].onclick=bubbleSort;
+    aBtn[5].onclick = function() {
+//        alert("fgef");
+//        var li = document.getElementById('div_wrap').getElementsByTagName('li');
+        bubbleSort(oli);
+//        maopao(oli);
+//        console.log("maopao");
+    }
+})();
+
+function bubbleSort() {
+
+  var i = 0;
+  inAnimation = true;
+  var sortRet = setInterval(function() {
+      if (i >= queue.length) {
+        clearInterval(sortRet);
+        inAnimation = false;
+        return;
       }
-   </script>  
- </head> 
- <body> 
-	   <table border="1" width="50%" id="table">
-	   <tr >
-		<th >学号</th>
-		<th>姓名</th>
-		<th>操作</th>
-	   </tr>  
 
-	   <tr>
-		<td>xh001</td>
-		<td>王小明</td>
-		<td><a href="javascript:;" onclick="deleteTr(this)" >删除</a></td>   <!--在删除按钮上添加点击事件  -->
-	   </tr>
+      for (var j = 0; j < queue.length - 1 - i; j++) {
+        if (queue[j] > queue[j + 1]) {
+          var temp = queue[j];
+          queue[j] = queue[j + 1];
+          queue[j + 1] = temp;
+        }
+      }
+      renderQueue();
+      i++;
+    }, 100);
+}
 
-	   <tr>
-		<td>xh002</td>
-		<td>刘小芳</td>
-		<td><a href="javascript:;" onclick="deleteTr(this)">删除</a></td>   <!--在删除按钮上添加点击事件  -->
-	   </tr>  
-	   </table>
-       <input type="button" value="添加一行"  onclick="addTr()"/>   <!--在添加按钮上添加点击事件  -->
+function bubble_sort() {
+			var box0 = document.getElementById("box");
+			var len = box0.childNodes.length;
+			if(len <= 1) {
+				return;
+			}
+			for(var i=0; i<len; i++){
+				for(var j=0; j<len-i-1; j++){
+					setTimeout((function(k){
+						var box0 = document.getElementById("box");
+						var nodes = box0.childNodes;
+						var k0 = parseInt(nodes[k].style.height);
+						var k1 = parseInt(nodes[k+1].style.height);
+						if(k0 > k1) {							
+								nodes[k].style.height = k1 + "px";
+								nodes[k].style.marginTop = (100 - k1) + "px";
+								nodes[k+1].style.height = k0 + "px";
+								nodes[k+1].style.marginTop = (100 - k0) + "px";						
+						}
+					})(j),1000);
+				}				
+			}
+		}
+</script>
 
- </body>
+
+</body>
 </html>
+© 2017 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Help
+Contact GitHub
+API
+Training
+Shop
+Blog
+About
+

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html class="no-js"> 
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>任务四:基础JavaScript-队列</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style type="text/css">
+        .rightin{
+            margin: 0 20px 0 0;
+        }
+        .queue{
+            margin:10px;
+        }
+        .num{
+            margin: 5px;
+            padding: 5px;
+            display: inline-block;
+            color: #fff;
+            background-color: #DB8686;
+        }
+        </style>
+    </head>
+    <body>
+        <input type="text" class="input" placeholder="请输入一个数字">
+        <button class="leftin">左侧入</button>
+        <button class="rightin">右侧入</button>
+        <button class="leftout">左侧出</button>
+        <button class="rightout">右侧出</button>
+        <div class="queue"></div>
+        <script type="text/javascript">
+        var input=document.querySelector('.input');
+        var leftin=document.querySelector('.leftin');
+        var rightin=document.querySelector('.rightin');
+        var leftout=document.querySelector('.leftout');
+        var rightout=document.querySelector('.rightout');
+        var queue=document.querySelector('.queue');
+        console.log(queue.firstChild);
+        //点击左输入,将input中输入的数字从左侧插入队列中；
+        leftin.onclick=function(){
+            var num=document.createElement('div');
+            if(input.value==''||isNaN(input.value) ){
+                alert('请输入一个数字');
+                input.value='';
+            }else{
+            num.textContent=input.value;
+            num.setAttribute('class','num');
+            queue.insertBefore(num,queue.firstChild);
+            input.value='';
+            } 
+        }
+        //点击"右侧入"，将input中输入的数字从右侧插入队列中；
+        rightin.onclick=function(){
+            var num=document.createElement('div');
+            if(input.value==''||isNaN(input.value)){
+                alert('请输入一个数字');
+                input.value='';
+            }else{
+            num.textContent=input.value;
+            num.setAttribute('class','num');
+            queue.appendChild(num);
+            input.value='';
+            }   
+        }
+        //点击"左侧出"，读取并删除队列左侧第一个元素，并弹窗显示元素中数值；
+        leftout.onclick=function(){
+            if(queue.children[0]==null){
+                alert('队列为空,没有元素可以删除');
+            }else{
+                var num=queue.removeChild(queue.children[0]);
+                alert(num.textContent);
+            }   
+        }
+        //点击"右侧出"，读取并删除队列右侧第一个元素，并弹窗显示元素中数值；
+        rightout.onclick=function(){
+            if(queue.children[0]==null){
+                alert('队列为空,没有元素可以删除');
+            }else{
+                var l=queue.children.length;
+                var num=queue.removeChild(queue.children[l-1]);
+                alert(num.textContent);
+            }   
+        }
+        //点击队列中任何一个元素，则该元素会被从队列中删除
+        queue.addEventListener("click", function(e) {              //需要用e把事件对象传递给监听器内的函数,e.target则表示事件的目标
+            console.log(e.target,e);
+            if(e.target||e.target.nodeName=='DIV'){               //注意必须要判断事件的目标是条形图时才执行删除
+                queue.removeChild(e.target);
+                alert('被删除的元素是'+e.target.textContent);
+            }
+        })
+        </script>        
+    </body>
+</html>

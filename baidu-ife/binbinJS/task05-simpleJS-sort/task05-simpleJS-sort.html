@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html class="no-js">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>任务五:基础JavaScript-排序可视化</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type="text/css">
+        .rightin {
+            margin: 0 20px 0 0;
+        }
+
+        .display {
+            max-width: auto;
+            border: 1px solid #A09E9E;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+
+        .display p {
+            margin: 10px 10px;
+        }
+
+        .queue {
+            margin: 10px;
+            height: 220px;
+            display: flex;
+            /*flex布局*/
+            align-items: flex-end;
+        }
+
+        .num {
+            margin: 5px;
+            padding: 5px;
+            float: left;
+            bottom: 0;
+            width: 25px;
+            color: #fff;
+            background-color: #DB8686;
+            cursor: pointer;
+            /*  鼠标样式指定 */
+        }
+    </style>
+</head>
+
+<body>
+    <input type="text" class="input" placeholder="请输入一个数字">
+    <button class="leftin">左侧入</button>
+    <button class="rightin">右侧入</button>
+    <button class="leftout">左侧出</button>
+    <button class="rightout">右侧出</button>
+    <button class="random">随机数</button>
+
+    <div class="display">
+        <p class="title">输入数字显示条形图</p>
+        <div class="queue"></div>
+        <hr/>
+        <p>可视化排序</p>
+        <button class="bubble">冒泡排序</button>
+        <p>稳定排序-冒泡排序就像一个教官（计算机）伸出双手，从头开始，按顺序依次选择两个人排列站位.它可以原地排序，并且是能简单实现的几种排序算法之一，但是它对于少数元素之外的数列排序是很没有效率的。</p>
+        <button class="selection">选择排序</button>
+        <p>不稳定排序-选择排序可以通俗理解为第一个人指着后面的人说，你们中最小的站在我前面来。主要优点与数据移动有关,如果某个元素位于正确的最终位置上，则它不会被移动。选择排序每次交换一对元素，它们当中至少有一个将被移到其最终位置上。在所有的完全依靠交换去移动元素的排序方法中，选择排序属于非常好的一种。
+            但原地操作几乎是选择排序的唯一优点，当空间复杂度要求较高时，可以考虑选择排序；实际适用的场合非常罕见。
+        </p>
+        <button class="insertion">插入排序</button>
+        <p>稳定排序-插入排序的工作原理与打扑克牌时起牌方法基本一样,是通过构建有序序列，对于未排序数据，在已排序序列中从后向前扫描，找到相应位置并插入。因而在从后向前的扫描过程中，需要反复把已排序元素逐步向后挪位，为最新元素提供插入空间,适用于少量数据的排序。</p>
+        <!-- <button class="shell">希尔排序</button>
+            <p>不稳定排序-希尔排序基于插入排序改进两点：
+                
+                1.插入排序在对几乎已经排好序的数据操作时，效率高，即可以达到线性排序的效率。
+                2.但插入排序一般来说是低效的，因为插入排序每次只能将数据移动一位。
+                它与插入排序的不同之处在于，它会优先比较距离较远的元素。因此又叫缩小增量排序。</p> -->
+        <button class="merge">归并排序</button>
+        <p>稳定排序-归并排序的性能不受输入数据的影响，但它的表现比选择排序要好，因为它始终都是 O(nlogn)O(nlog⁡n) 的时间复杂度。是所需辅助空间最多的排序。</p>
+        <button class="quick">快速排序</button>
+        <p>不稳定排序-通过一趟排序将待排记录分隔成独立的两部分，其中一部分记录的关键字均比另一部分的关键字小，则可分别对这两部分记录继续进行排序，以达到整个序列有序。</p>
+        <button class="heap">堆排序</button>
+        <p>不稳定排序-堆排序可以说是一种利用堆的概念来排序的选择排序,是一个近似完全二叉树的结构，并同时满足堆积的性质：即子结点的键值或索引总是小于（或者大于）它的父节点,是所需辅助空间最少的排序.</p>
+    </div>
+
+    <script type="text/javascript">
+
+        var input = document.querySelector('.input');
+        var leftin = document.querySelector('.leftin');
+        var rightin = document.querySelector('.rightin');
+        var leftout = document.querySelector('.leftout');
+        var rightout = document.querySelector('.rightout');
+        var queue = document.querySelector('.queue');
+        var bubble = document.querySelector('.bubble');
+        var random = document.querySelector('.random');
+        var selection = document.querySelector('.selection');
+        var insertion = document.querySelector('.insertion');
+        // var shell=document.querySelector('.shell');
+        var merge = document.querySelector('.merge');
+        var quick = document.querySelector('.quick');
+        var heap = document.querySelector('.heap');
+        console.log(queue.firstChild);
+        //给按钮绑定DOM事件监听器,注意要带参数
+        leftin.addEventListener('click', function () {
+            check('in') ? add('left') : init();                      //用条件操作符?:来判断函数执行
+        }, false)
+        rightin.addEventListener('click', function () {
+            check('in') ? add('right') : init();
+        }, false)
+        leftout.addEventListener('click', function () {
+            check('out') ? del('left') : init();
+        }, false)
+        rightout.addEventListener('click', function () {
+            check('out') ? del('right') : init();
+        }, false)
+        bubble.addEventListener('click', function () {
+            check('sort') ? bubbleSort() : init();
+        }, false)
+        random.addEventListener('click', function () {
+            randomNum();
+        }, false)
+        selection.addEventListener('click', function () {
+            check('sort') ? selectionSort() : init();
+        }, false)
+        insertion.addEventListener('click', function () {
+            check('sort') ? insertionSort() : init();
+        }, false)
+        merge.addEventListener('click', function () {
+            check('sort') ? mergeSort() : init();
+        }, false)
+        quick.addEventListener('click', function () {
+            check('sort') ? quickSort() : init();
+        }, false)
+        heap.addEventListener('click', function () {
+            check('sort') ? heapSort() : init();
+        }, false)
+        //定义增加元素add()函数
+        function add(direction) {
+            var num = document.createElement('div');
+            num.textContent = input.value;
+            num.setAttribute('class', 'num');
+            num.style.height = input.value * 2 + 'px';
+            switch (direction) {
+                case 'left':
+                    console.log(queue.children[0]);
+                    queue.insertBefore(num, queue.firstChild);
+                    break;
+                case 'right':
+                    queue.appendChild(num);
+            }
+            init();
+        }
+        //定义删减元素del()函数
+        function del(direction) {
+            switch (direction) {
+                case 'left':
+                    var num = queue.removeChild(queue.children[0]);
+                    break;
+                case 'right':
+                    var l = queue.children.length;
+                    var num = queue.removeChild(queue.children[l - 1]);
+                    break;
+            }
+            alert('被删除的元素是' + num.innerHTML);
+        }
+        //输入验证:
+        //1.限制输入的数字在10-100;
+        //2.队列元素数量最多限制为60个，当超过60个时，添加元素时alert出提示;
+        //3.当队列为空时,点击左出和右出按钮弹出提示
+        //4.当队列为空或仅有一个元素时,点击任何排序按钮都弹出提示
+        function check(operation) {
+            switch (operation) {
+                case 'in':
+                    if (input.value == null || input.value < 10 || input.value > 100) {
+                        alert('请输入10-100之间的数字');
+                        return false;
+                    } else {
+                        if (queue.children.length >= 60) {
+                            alert('队列已满60,无法再添加元素');
+                            return false;
+                        }
+                        return true;
+                    }
+                    break;
+                case 'out':
+                    if (queue.children.length <= 0) {
+                        alert('队列为空,无法删除元素');
+                        return false;
+                    }
+                    return true;
+                    break;
+                case 'sort':
+                    if (queue.children.length <= 0) {
+                        alert('队列为空,无法排序');
+                        return false;
+                    } else {
+                        if (queue.children.length == 1) {
+                            alert('队列中仅1个元素,无法排序,请输入2个以上元素');
+                            return false;
+                        }
+                        return true;
+                    }
+            }
+        }
+        //初始化输入框
+        function init() {
+            input.value = null;
+            input.focus();
+        }
+        //事件委托给父元素实现点击条形元素删除该元素
+        queue.addEventListener("click", function (e) {              //需要用e把事件对象传递给监听器内的函数,e.target则表示事件的目标
+            console.log(e.target, e);
+            if (e.target.nodeName == 'DIV' && e.target.getAttribute('class') == 'num') {               //注意必须要判断事件的目标是条形图时才执行删除,并且nodeName必须大写才能匹配
+                queue.removeChild(e.target);
+                alert('被删除的元素是' + e.target.textContent);
+                return;
+            }
+        })
+        //冒泡排序for循环,无法使用定时器可视化--重复地走访要排序的数列，一次比较两个元素，如果它们的顺序错误就把它们交换过来。走访数列的工作是重复地进行直到没有再需要交换时
+        function bubbleSort() {
+            var num = document.querySelectorAll('.num');
+            var l = num.length;
+            console.log(num[0].style.height);
+            for (var j = 0; j < l; j++) {
+                for (var n = 0; n < l - j - 1; n++) {
+                    setTimeout((function (k) {
+                        if (parseInt(num[k].style.height) > parseInt(num[k + 1].style.height)) {    //注意!!!这里num[k].style.height是一个字符串!!比较时要进行num转换!!
+                            var tmp = num[k].style.height;
+                            var mark = num[k].textContent;
+                            num[k].style.height = num[k + 1].style.height;
+                            num[k].textContent = num[k + 1].textContent;
+                            num[k + 1].style.height = tmp;
+                            num[k + 1].textContent = mark;
+                            console.log(num[k].style.height);
+                        }
+                    })(n), 1000);
+
+                }
+            }
+        }
+        //冒泡排序if循环,可以用setInterval定时器可视化,未完成
+        function randerA(a, b, c) {
+            var num = document.querySelectorAll('.num');
+            for (var i = 0; i < num.length; i++) {
+
+            }
+        }
+        //选择排序--首先在未排序序列中找到最小元素，存放到排序序列的起始位置，然后，再从剩余未排序元素中继续寻找最小元素，放到已排序序列的末尾。以此类推，直到所有元素均排序完毕。
+        function selectionSort() {
+            var num = document.querySelectorAll('.num');
+            var l = num.length;
+            var minIndex, tmp, high;
+            console.time('选择排序耗时');
+            for (let i = 0; i < l - 1; i++) {
+                minIndex = i;
+                for (let j = i + 1; j < l; j++) {                        //每次内部for循环找出当前队列中最小的项的index
+                    if (num[minIndex].textContent > num[j].textContent) {
+                        minIndex = j;
+                        console.log(num[0].textContent, num[1].textContent, num[2].textContent, num[3].textContent)
+                    }
+                }
+                tmp = num[i].textContent;                         //把当前循环队列中的第一项与最小项交换位置
+                high = num[i].style.height;
+                num[i].textContent = num[minIndex].textContent;
+                num[i].style.height = num[minIndex].style.height;
+                num[minIndex].textContent = tmp;
+                num[minIndex].style.height = high;
+            }
+            console.timeEnd('选择排序耗时');
+        }
+        //插入排序
+        function insertionSort() {
+            var num = document.querySelectorAll('.num');
+            var l = num.length;
+            console.time('插入排序耗时');
+            for (let i = 1; i < l; i++) {                          //假设第0个元素是一个有序的数列，第0个以后的是无序的序列
+                let tmp = num[i].textContent;
+                let high = num[i].style.height;
+                let j = i - 1;                                   //记住有序数列的最后一个位置
+                while (j >= 0 && num[j].textContent > tmp) {           //从第1个元素开始将无序数列的元素插入到有序数列中第一个不比它大的元素前面
+                    num[j + 1].textContent = num[j].textContent;
+                    num[j + 1].style.height = num[j].style.height;
+                    j--;
+                }
+                num[j + 1].textContent = tmp;
+                num[j + 1].style.height = high;
+                console.log(num[0].textContent, num[1].textContent, num[2].textContent, num[3].textContent)
+            }
+            console.timeEnd('插入排序耗时');
+        }
+        //归并排序--在本题目中,由于归并排序需要进行数组分切操作,必须将节点的高度值取出单独作为数组排序后再重新绘制
+        function mergeSort() {
+            var num = document.querySelectorAll('.num');
+            console.log(num[0].textContent, num[1].textContent, num[2].textContent, num[3].textContent)
+            var arr = new Array();
+            var l = num.length;
+            for (let i = 0; i < l; i++) {
+                arr[i] = parseInt(num[i].textContent);
+            }
+            console.time('归并排序耗时');
+            var arrMerge = mergeS(arr);          //将节点的高度值组成的数组进行归并排序
+            console.timeEnd('归并排序耗时');
+            for (let i = 0; i < l; i++) {
+                num[i].textContent = arrMerge[i];
+                num[i].style.height = arrMerge[i] * 2 + 'px';
+            }
+        }
+        function mergeS(arr) {                //把长度为 n 的输入序列分成两个长度为 n/2 的子序列；
+            var l = arr.length;
+            if (l < 2) {                         //
+                return arr;
+            } else {
+                var middle = Math.floor(l / 2);
+                var left = arr.slice(0, middle);
+                var right = arr.slice(middle);
+                console.log(left, right);
+                var arrMerge = mergeInner(mergeS(left), mergeS(right));       //对这两个子序列分别采用归并排序
+                return arrMerge;
+            }
+        }
+        function mergeInner(left, right) {       //对这两个子序列分别采用归并排序
+            var result = [];
+            while (left.length && right.length) {       //将两个排序好的子序列合并成一个新数组
+                if (left[0] <= right[0]) {
+                    result.push(left.shift());         //依次比较左右两个数组的每一项,如果左边数组中的项比较小,则把它放进新数组,否则把右边数组的项放进去
+                } else {
+                    result.push(right.shift());
+                }
+                console.log(left, right, result);
+            }
+            while (left.length)
+                result.push(left.shift());
+            while (right.length)
+                result.push(right.shift());
+            console.log(result);
+            return result;
+        }
+        //快速排序--同归并排序一样,因为需要进行数组.splice()操作,需要将节点的高度取出构建新数组排序
+        function quickSort() {
+            var num = document.querySelectorAll('.num');
+            console.log(num[0].textContent, num[1].textContent, num[2].textContent, num[3].textContent)
+            var arr = new Array();
+            var l = num.length;
+            for (let i = 0; i < l; i++) {
+                arr[i] = parseInt(num[i].textContent);
+            }
+            console.time('快速排序耗时');
+            var arrMerge = quickS(arr);          //将节点的高度值组成的数组进行快速排序
+            console.timeEnd('快速排序耗时');
+            for (let i = 0; i < l; i++) {
+                num[i].textContent = arrMerge[i];
+                num[i].style.height = arrMerge[i] * 2 + 'px';
+            }
+        }
+        function quickS(arr) {
+            // var l=arr.length;             //这里不能用变量l储存arr的长度代入后面for循环,因为传入的arr的长度是变化的
+            if (arr.length < 2) {
+                return arr;
+            } else {
+                
+                var pivotIndex = Math.floor(arr.length / 2);        //取数组中中间项作为基准,并新建左右两个新数组待用
+                var pivot = arr.splice(pivotIndex, 1)[0];
+                console.log(pivot);
+                var left = [];
+                var right = [];
+                for (let i = 0; i < arr.length; i++) {               //for循环比较原数组,比基准小的放左边数组,否则放右边
+                    if (arr[i] < pivot) {
+                        left.push(arr[i]);
+                    } else {
+                        right.push(arr[i]);
+                    }
+                    console.log(left, right);
+                }
+                var result = quickS(left).concat([pivot], quickS(right));     //递归调用,直到所有细分数组都只有一个元素,
+                console.log(result);
+                return result;
+            }
+        }
+        //堆排序--待了解
+        function heapSort() {
+            var num = document.querySelectorAll('.num');
+            console.log(num[0].textContent, num[1].textContent, num[2].textContent, num[3].textContent)
+            var arr = new Array();
+            var l = num.length;
+            for (let i = 0; i < l; i++) {
+                arr[i] = parseInt(num[i].textContent);
+            }
+            console.time('堆排序耗时');
+            var arrMerge = heapS(arr);          //将节点的高度值组成的数组进行快速排序
+            console.timeEnd('堆排序耗时');
+            for (let i = 0; i < l; i++) {
+                num[i].textContent = arrMerge[i];
+                num[i].style.height = arrMerge[i] * 2 + 'px';
+
+            }
+            function heapS(arr) {
+                //建堆
+                let heapSize = arr.length, temp;
+                for (let i = Math.floor(heapSize / 2) - 1; i >= 0; i--) {
+                    heapify(arr, i, heapSize);
+                }
+                //堆排序
+                for (let j = heapSize - 1; j >= 1; j--) {
+                    temp = arr[0];
+                    arr[0] = arr[j];
+                    arr[j] = temp;
+                    heapify(arr, 0, --heapSize);
+                }
+                return arr;
+            }
+            /*方法说明：维护堆的性质
+            @param  arr 数组
+            @param  x   数组下标
+            @param  len 堆大小*/
+            function heapify(arr, x, len) {
+                let l = 2 * x + 1, r = 2 * x + 2, largest = x, temp;
+                if (l < len && arr[l] > arr[largest]) {
+                    largest = l;
+                }
+                if (r < len && arr[r] > arr[largest]) {
+                    largest = r;
+                }
+                if (largest != x) {
+                    temp = arr[x];
+                    arr[x] = arr[largest];
+                    arr[largest] = temp;
+                    heapify(arr, largest, len);
+                }
+            }
+        }
+
+        //定义随机生成4个元素的randomNum()函数
+        function randomNum() {
+            for (var i = 0; i < 4; i++) {
+                var num = document.createElement('div');
+                var ranNum = Math.floor(Math.random() * (100 - 10) + 10);
+                num.textContent = ranNum;
+                num.setAttribute('class', 'num');
+                num.style.height = ranNum * 2 + 'px';
+                queue.appendChild(num);
+            }
+        }
+    </script>
+</body>
+
+</html>

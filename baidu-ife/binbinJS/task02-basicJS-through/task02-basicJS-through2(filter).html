@@ -24,38 +24,30 @@ var aqiData = [
   ["西安", 100]
 ];
 
-
   /*
   在注释下方编写代码
   遍历读取aqiData中各个城市的数据
   将空气质量指数大于60的城市显示到aqi-list的列表中
   */
-// var aqiNew=aqiData.filter(function(item,index,array){         filter()筛选二维数组的方法见代码2
-//   return (item[i][1]>60);
 
 (function () {
-var l=aqiData.length;
-var aqiNew=new Array();
-var j=0;
-for(var i=0;i<l;i++){                  //用for循环获取分数>60的项组成新数组aqiNew
-  if(aqiData[i][1]>60){ 
-    aqiNew[j]=aqiData[i];
-    j++;
-  }
+//用filter()筛选二维数组,选出空气质量大于60的项
+function aqi60(data){
+    return data[1]>60;
 }
-function compare(a,b){               // sort()可以对二维数组排序
-   return b[1]-a[1];
-}
-aqiNew.sort(compare);
-
-var list=document.getElementById('aqi-list');    
-for(var m=0;m<aqiNew.length;m++){           //向文档写入符合条件的城市
-  console.log(aqiNew[m]);
+var aqiWell=aqiData.filter(aqi60)              //返回一个新数组，其包含元素为原始数组中调用指定函数实现true的所有项
+console.log(aqiWell);
+//对空气质量大于60的所有项组成的新数组用sort()进行排序
+aqiWell.sort(function(a,b){
+  return b[1]-a[1];
+});
+//将排好序的新数组中的项写入DOM
+for(var i=0;i<aqiWell.length;i++){
   var city=document.createElement('li');
-  city.innerHTML='第'+(m+1)+'名:'+aqiNew[m][0]+',空气指数为'+aqiNew[m][1];
+  var list=document.getElementById('aqi-list');
+  city.innerHTML="第"+(i+1)+"名："+aqiWell[i][0]+'，空气质量指数'+aqiWell[i][1];
   list.appendChild(city);
-};
-
+}
 
 })();
 

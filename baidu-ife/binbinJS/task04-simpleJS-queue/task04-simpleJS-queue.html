@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html class="no-js"> 
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>任务四:基础JavaScript-队列</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style type="text/css">
+        .rightin{
+            margin: 0 20px 0 0;
+        }
+        .queue{
+            margin:10px;
+        }
+        .num{
+            margin: 5px;
+            padding: 5px;
+            display: inline-block;
+            color: #fff;
+            background-color: #DB8686;
+        }
+        </style>
+    </head>
+    <body>
+        <input type="text" class="input" placeholder="请输入一个数字">
+        <button class="leftin">左侧入</button>
+        <button class="rightin">右侧入</button>
+        <button class="leftout">左侧出</button>
+        <button class="rightout">右侧出</button>
+        <div class="queue"></div>
+        <script type="text/javascript">
+        var input=document.querySelector('.input');
+        var leftin=document.querySelector('.leftin');
+        var rightin=document.querySelector('.rightin');
+        var leftout=document.querySelector('.leftout');
+        var rightout=document.querySelector('.rightout');
+        var queue=document.querySelector('.queue');
+        console.log(queue.firstChild);
+        //给按钮绑定DOM事件处理程序,注意要带参数
+        leftin.onclick=function(){                         //给按钮增加带参数的DOM事件处理程序
+            add('left');
+        } 
+        rightin.onclick=function(){
+            add('right');
+        }
+        leftout.onclick=function(){
+            del('left');
+        }
+        rightout.onclick=function(){
+            del('right');
+        }
+        //定义函数add(),将input中输入的数字从插入队列中；
+        function add(direction){
+            var num=document.createElement('div');
+            if(input.value==''||isNaN(input.value) ){
+                alert('请输入一个数字');
+                input.value='';
+            }else{
+            num.textContent=input.value;
+            num.setAttribute('class','num');
+            num.onclick=function(){                                     //点击队列中任何一个元素，则该元素会被从队列中删除
+                queue.removeChild(this);                                //如何通过调用del()函数来删除还没用想到
+                alert(this.textContent);
+            } 
+            switch(direction){
+                case 'left':
+                queue.insertBefore(num,queue.firstChild);
+                break;
+                case 'right':
+                queue.appendChild(num);
+            }
+            input.value='';
+            } 
+        }
+        //定义函数del(),从队列中删除元素并弹窗显示
+        function del(direction){
+            if(queue.children[0]==null){
+                alert('队列为空,没有元素可以删除');
+            }else{
+                switch(direction){
+                    case 'left':
+                    var num=queue.removeChild(queue.children[0]);
+                    break;
+                    case 'right':
+                    var l=queue.children.length;
+                    var num=queue.removeChild(queue.children[l-1]);
+                    break;
+                }  
+                alert(num.innerHTML);              
+            }   
+        }
+        </script>       
+    </body>
+</html>

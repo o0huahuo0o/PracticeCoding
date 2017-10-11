@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="UTF-8">
+	<title>js_4</title>
+	<style>
+	.node {
+		display: inline-block;
+		width: 40px;
+		height: 40px;
+		line-height: 40px;
+		text-align: center;
+		color: #fff;
+		background: rgba(0, 0, 0, .4);
+		margin: 10px;
+		overflow: hidden;
+	}
+	</style>
+</head>
+<body>
+<div id="btn">
+	<input type="text" class="text">
+	<input type="button" class="left-in" value="左侧入">
+	<input type="button" class="right-in" value="右侧入">
+	<input type="button" class="left-out" value="左侧出">
+	<input type="button" class="right-out" value="右侧出">
+</div>
+<div id="box"></div>
+<script>
+	var ipt = document.querySelector('.text'),
+		box = document.getElementById('box'),
+		LI = document.querySelector('.left-in'),
+		RI = document.querySelector('.right-in'),
+		LO = document.querySelector('.left-out'),
+		RO = document.querySelector('.right-out');
+	LI.onclick = function() {
+		var node = createNode();
+		if(!/\S/.test(node.innerText)) return;
+		box.insertBefore(node, box.firstChild);
+	};
+	RI.onclick = function() {
+		var node = createNode();
+		if(!/\S/.test(node.innerText)) return;
+		box.appendChild(node);
+	};
+	LO.onclick = function() {
+		if(box.children.length < 1) return;
+		box.removeChild(box.firstElementChild);
+	};
+	RO.onclick = function() {
+		if(box.children.length < 1) return;
+		box.removeChild(box.lastElementChild);
+	};
+	box.addEventListener('click', function(e) {
+		box.removeChild(e.target);
+	});
+	function createNode() {
+		var text = ipt.value;
+		var node = document.createElement('div');
+		node.setAttribute('class', 'node');
+		node.innerText = text;
+		ipt.value = '';
+		return node;
+	}
+</script>
+</body>
+</html>
